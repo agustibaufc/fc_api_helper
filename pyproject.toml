@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fc-api-helper"
+version = "0.1.0"
+description = "API automation tools for BE and DPL services"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0",
+    "colorama>=0.4.6",
+]
+
+[project.scripts]
+be-curl = "fc_api_helper.cli.be_curl:main"
+be-api = "fc_api_helper.cli.be_api:main"
+dpl-curl = "fc_api_helper.cli.dpl_curl:main"
+dpl-api = "fc_api_helper.cli.dpl_api:main"
+fc-uuid = "fc_api_helper.cli.fc_uuid:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
