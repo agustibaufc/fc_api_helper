@@ -74,5 +74,4 @@ dpl-curl http://localhost:8030/api/endpoint/
 
 - Python 3.8+
 - curl
-- jq (optional, for JSON formatting)
 - fzf (for interactive API explorer)

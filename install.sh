@@ -17,10 +17,6 @@ dpl-api() {
     local out=$(command dpl-api "$@")
     [ $? -eq 0 ] && [ -n "$out" ] && print -z "$out"
 }
-fc-uuid() {
-    local out=$(command fc-uuid "$@")
-    [ $? -eq 0 ] && [ -n "$out" ] && print -z "$out"
-}
 EOF
 
 # Source from .zshrc if not already
