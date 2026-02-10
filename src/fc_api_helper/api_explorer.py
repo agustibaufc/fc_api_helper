@@ -622,9 +622,29 @@ def run_api_explorer(config, refresh=False):
 
     current_path = path
 
-    # Process all headers first (so x-sirius-client-uuid is available for fc-uuid)
-    header_params = get_parameters(schema, path, method, 'header')
+    # Process required headers from config first (e.g., x-sirius-client-uuid for BE API)
     headers = {}
+    required_headers = config.get('required_headers', [])
+    if required_headers:
+        print(header("Required Headers"), file=sys.stderr)
+        print("", file=sys.stderr)
+        for rh in required_headers:
+            name = rh['name']
+            description = rh.get('description', '')
+
+            value = prompt_for_value(name, True, 'string', description, 'header')
+
+            if value:
+                headers[name] = value
+                if name.lower() == 'x-sirius-client-uuid':
+                    _current_client_uuid = value
+                    print(f"  {info('(will be used for fc-uuid filtering)')}", file=sys.stderr)
+        print("", file=sys.stderr)
+
+    # Process schema-defined headers, skipping any already provided by required_headers
+    required_header_names = {rh['name'].lower() for rh in required_headers}
+    header_params = get_parameters(schema, path, method, 'header')
+    header_params = [p for p in header_params if p['name'].lower() not in required_header_names]
     if header_params:
         print(header("Header Parameters"), file=sys.stderr)
         print("", file=sys.stderr)
@@ -638,7 +658,6 @@ def run_api_explorer(config, refresh=False):
 
             if value:
                 headers[name] = value
-                # Capture client UUID for fc-uuid filtering
                 if name.lower() == 'x-sirius-client-uuid':
                     _current_client_uuid = value
                     print(f"  {info('(will be used for fc-uuid filtering)')}", file=sys.stderr)

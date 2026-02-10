@@ -56,7 +56,13 @@ def main():
         'schemas': env_config['schemas'],
         'base_url': env_config['base_url'],
         'curl_command': 'be-curl',
-        'environment': args.env
+        'environment': args.env,
+        'required_headers': [
+            {
+                'name': 'x-sirius-client-uuid',
+                'description': 'Client UUID (required for all endpoints)',
+            }
+        ],
     }
 
     if args.refresh:
